@@ -181,7 +181,49 @@
 				<div class="col-lg-12">
 						<h1>Géolocalisez-moi !</h1>
 						<div class="" align="center">
-							<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2623.451677004377!2d2.235566215930058!3d48.88772860659412!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e6651cdc22fe55%3A0x9da2646678c0e30a!2s20%20Jardins%20Boieldieu%2C%2092800%20Puteaux!5e0!3m2!1sen!2sfr!4v1604416555213!5m2!1sen!2sfr" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                            
+                            <script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
+                                <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
+                            
+                                <div id='map' style='width: 900px; height: 900px;'></div>
+                                <script>
+                                mapboxgl.accessToken = 'pk.eyJ1IjoidGhvbWFzYmVsYXJkeSIsImEiOiJja2gzNDgzNnowZ3llMnlvaXo3YnExZjdxIn0.4XVT0Tsw-lbpicVl6i6mng';
+                                var map = new mapboxgl.Map({
+                                container: 'map',
+                                style: 'mapbox://styles/thomasbelardy/ckh3e2yrg1mnp1ale3d26c2d7', // style
+                                center: [2.34, 48.86], //  position départ [lng, lat]
+                                zoom: 12 //  zoom départ
+                                });
+
+                                // Ajout de la géolocalisation utilisateur
+                                map.addControl(
+                                new mapboxgl.GeolocateControl({
+                                positionOptions: {
+                                enableHighAccuracy: true
+                                },
+                                 trackUserLocation: true
+                                 })
+                                 );
+                                </script>
+
+                                    // fonction de popup
+                                <script>map.on('click', function(e) {
+                                var features = map.queryRenderedFeatures(e.point, { layers: ['features-0et3lt'] });
+                              
+                                if (!features.length) {
+                                  return;
+                                }
+                              
+                                var feature = features[0];
+                              
+                                var popup = new mapboxgl.Popup({ offset: [0, -15] })
+                                  .setLngLat(feature.geometry.coordinates)
+                                  .setHTML('<h3>' + feature.properties.title + '</h3><p>' + feature.properties.description + '</p>')
+                                  .addTo(map);
+                              });
+                            </script>
+
+
 						</div>
 				</div>
 			</div>
